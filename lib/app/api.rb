@@ -52,4 +52,40 @@ class ExercismApp < Sinatra::Base
 
     pg :assignments, locals: {assignments: assignments.next}
   end
+
+  post '/api/v1/user/assignments/stash' do
+    request.body.rewind
+    data = request.body.read
+    if data.empty?
+      halt 400, "Must send key and code as json."
+    end
+    data = JSON.parse(data)
+    user = User.find_by(key: data['key'])
+    halt 401, "Unable to identify user" unless user
+
+    stash = Stash.new(user, data['code'], data['path']).save
+
+    status 201
+    pg :stash, locals: {submission: stash.submission}
+  end
+
+  get '/api/v1/user/assignments/stash' do
+    unless params[:key]
+      halt 401, {error: "Please provide API key"}.to_json
+    end
+    user = User.find_by(key: params[:key]) 
+    code = []
+    code = user.submissions.each {|sub| sub.loot}  
+    status 200
+    #stash = Stash.new
+    
+
+  end
+
+  get '/api/v1/user/test' do
+    status 200
+  end
+
+
+
 end

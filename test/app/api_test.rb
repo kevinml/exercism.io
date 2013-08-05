@@ -81,4 +81,22 @@ class ApiTest < Minitest::Test
 
     assert_equal({"assignments" => ['bob', 'rna-transcription']}, JSON::parse(last_response.body))
   end
+
+  def test_api_accepts_stash_submission_attempt
+    post '/api/v1/user/assignments/stash', {key: alice.key, code: 'THE CODE', path: 'code.rb'}.to_json
+
+    get '/api/v1/user/assignments/stash', {key: alice.key}
+
+    
+    assert_equal 200, last_response.status
+    #assert_equal({"code" => 'THE CODE'}, JSON::parse(last_response.body))
+  end
+
+  def test_api_returns_stashed_submission
+    @u = User.create
+
+    get '/api/v1/user/assignments/stash', {key: @u.key}
+
+    assert_equal 200, last_response.status
+  end
 end
