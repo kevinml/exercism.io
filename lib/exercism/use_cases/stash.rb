@@ -15,6 +15,7 @@ class Stash
     user.submissions_on(exercise).each do |sub|
       sub.supersede_stash!
     end
+    s = user.submissions.select{ |submission| submission.state == 'stashed' }
   	submission.state = 'stashed'
   	submission.code = code
   	user.submissions << submission

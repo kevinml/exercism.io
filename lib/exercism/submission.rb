@@ -61,7 +61,8 @@ class Submission
   end
 
   def supersede_stash!
-    self.remove if stashed?
+    self.delete if stashed?
+    save
   end
 
   def loot

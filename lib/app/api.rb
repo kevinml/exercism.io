@@ -75,10 +75,9 @@ class ExercismApp < Sinatra::Base
     end
     user = User.find_by(key: params[:key]) 
     code = []
-    code = user.submissions.each {|sub| sub.loot}  
+    code = user.submissions.each {|sub| sub.loot}
     status 200
     #stash = Stash.new
-    
 
   end
 
