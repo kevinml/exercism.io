@@ -24,8 +24,13 @@ class Stash
   end
 
   def loot
+    submission.code = self.get_code
+    self
+  end
+
+  def get_code
     user.submissions_on(exercise).each do |sub|
-      return sub if self.stashed?
+      sub.code if sub.stashed?
     end
   end
 
