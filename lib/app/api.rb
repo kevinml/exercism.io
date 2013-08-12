@@ -66,7 +66,7 @@ class ExercismApp < Sinatra::Base
     stash = Stash.new(user, data['code'], data['path']).save
 
     status 201
-    pg :stash, locals: {submission: stash.submission}
+    #pg :stash, locals: {submission: stash.submission}
   end
 
   get '/api/v1/user/assignments/stash' do
@@ -75,11 +75,10 @@ class ExercismApp < Sinatra::Base
     end
     code = ''
     user = User.find_by(key: params[:key]) 
-    stash = Stash.new(user,code,'path.rb').loot
-
-    status 200
-    #stash = Stash.new
-    pg :stash, locals: {submission: stash.submission}
+    stash = user.submissions.select{ |submission| submission.stashed? }[0]
+    pg :stash, locals: {stash: stash}
+    #{code: stash.code}.to_json
+    
   end
 
   get '/api/v1/user/test' do

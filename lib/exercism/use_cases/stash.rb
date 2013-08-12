@@ -4,7 +4,8 @@ class Stash
   def initialize(user, code, filename, curriculum = Exercism.current_curriculum)
     @user = user
     @code = code
-    @language = curriculum.identify_language(filename)
+    @filename = filename
+    @language = curriculum.identify_language(@filename)
   end
 
   def submission
@@ -17,14 +18,16 @@ class Stash
     end
     s = user.submissions.select{ |submission| submission.state == 'stashed' }
   	submission.state = 'stashed'
-  	submission.code = code
+  	submission.code = @filename + " " + code
   	user.submissions << submission
     user.save
   	self
   end
 
   def loot
-    submission.code = self.get_code
+    s = user.submissions.select{ |submission| submission.state == 'stashed' }
+    puts s[0]
+    submission = s[0]
     self
   end
 
