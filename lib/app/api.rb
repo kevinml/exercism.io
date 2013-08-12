@@ -78,13 +78,6 @@ class ExercismApp < Sinatra::Base
     stash = user.submissions.select{ |submission| submission.stashed? }[0]
     pg :stash, locals: {stash: stash}
     #{code: stash.code}.to_json
-    
   end
-
-  get '/api/v1/user/test' do
-    status 200
-  end
-
-
 
 end

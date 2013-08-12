@@ -16,25 +16,24 @@ class Stash
     user.submissions_on(exercise).each do |sub|
       sub.supersede_stash!
     end
-    s = user.submissions.select{ |submission| submission.state == 'stashed' }
   	submission.state = 'stashed'
-  	submission.code = @filename + " " + code
+  	self.add_title
   	user.submissions << submission
     user.save
   	self
   end
 
   def loot
-    s = user.submissions.select{ |submission| submission.state == 'stashed' }
-    puts s[0]
-    submission = s[0]
+    submission = self.get_stash
     self
   end
 
-  def get_code
-    user.submissions_on(exercise).each do |sub|
-      sub.code if sub.stashed?
-    end
+  def get_stash
+    user.submissions.select{ |submission| submission.stashed? }[0]
+  end
+
+  def add_title
+    submission.code = @filename + " " + code
   end
 
   private

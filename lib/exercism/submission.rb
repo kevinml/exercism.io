@@ -65,12 +65,6 @@ class Submission
     save
   end
 
-  def loot
-    if self.stashed?
-      self.code
-    end
-  end
-
   def submitted?
     true
   end
