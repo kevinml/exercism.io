@@ -56,12 +56,7 @@ class Submission
   end
 
   def supersede!
-    self.state = 'superseded' if pending? || stashed?
-    save
-  end
-
-  def supersede_stash!
-    self.delete if stashed?
+    self.state = 'superseded' if pending?
     save
   end
 

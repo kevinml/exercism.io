@@ -9,12 +9,13 @@ class Stash
   end
 
   def submission
-  	@submission ||= Submission.on(exercise)
+  	@submission ||= Submission.new
   end
 
   def save
-    user.submissions_on(exercise).each do |sub|
-      sub.supersede_stash!
+    old = self.get_stash
+    if old
+      old.delete
     end
   	submission.state = 'stashed'
   	self.add_title

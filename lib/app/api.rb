@@ -62,11 +62,8 @@ class ExercismApp < Sinatra::Base
     data = JSON.parse(data)
     user = User.find_by(key: data['key'])
     halt 401, "Unable to identify user" unless user
-
     stash = Stash.new(user, data['code'], data['path']).save
-
     status 201
-    #pg :stash, locals: {submission: stash.submission}
   end
 
   get '/api/v1/user/assignments/stash' do
@@ -77,7 +74,6 @@ class ExercismApp < Sinatra::Base
     user = User.find_by(key: params[:key]) 
     stash = user.submissions.select{ |submission| submission.stashed? }[0]
     pg :stash, locals: {stash: stash}
-    #{code: stash.code}.to_json
   end
 
 end
